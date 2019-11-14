@@ -1,0 +1,18 @@
+{
+ "name": "todos",
+ "description": "Enter your project description",
+ "author": {
+  "name": "Christian Hovenbitzer",
+  "email": "christian.hovenbitzer@selinka-schmitz.de"
+ },
+ "version": "0.1.0",
+ "binaryname": "todos",
+ "frontend": {
+  "dir": "frontend",
+  "install": "npm install",
+  "build": "npm run build",
+  "bridge": "src",
+  "serve": "npm run serve"
+ },
+ "WailsVersion": ""
+}
