@@ -20,6 +20,7 @@ body {
 
 h1 {
     text-align: center;
+    box-shadow: none;
 }
 
 ul {
@@ -35,6 +36,15 @@ li {
     border-style: groove;
     border-width: 0.1px;
     /* 0 25px 50px 0 rgba(0, 0, 0, 0.1); */
+}
+
+.item {
+    min-height: 30px;
+    padding: 8px;
+    text-align: left;
+    border-color: #e3dfee;
+    border-style: groove;
+    border-width: 0.1px;
 }
 
 .transferapp {

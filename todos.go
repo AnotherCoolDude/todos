@@ -124,7 +124,6 @@ func (t *Todos) SaveAs(todos string) error {
 		return err
 	}
 	return t.setFilename(filename)
-	return nil
 }
 
 func (t *Todos) setFilename(filename string) error {

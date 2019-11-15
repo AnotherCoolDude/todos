@@ -2,12 +2,12 @@
     <div>
         <section class="transferapp" v-cloak>
             <header class="header">
-                <h1 class="header">Basecamp to Proad</h1>
+                <h1>Basecamp to Proad</h1>
             </header>
             <section class="projectlist">
                 <ul>
-                    <li>SEIN-0001-0001</li>
-                    <li>SEIN-0001-0002</li>
+                    <li is="pitem" v-bind:job="Testjob"></li>
+                    <li is="pitem" v-bind:job="Testjob"></li>
                 </ul>
             </section>
             <section class="todoconfig">
@@ -46,8 +46,18 @@
 <script>
 import "./assets/css/transferapp.css"
 
+import pitem from "./components/ProjectItem.vue";
+
 export default {
-    name: "app"
+    name: "app",
+    data: function() {
+        return {
+            Testjob: {nr: "SEIN-0001-0001", amount: "5"}
+        };
+    },
+    components: {
+        pitem
+    }
 }
 </script>
 
