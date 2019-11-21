@@ -12,33 +12,14 @@
             </section>
             <section class="todoconfig">
                 <ul>
-                    <li>
-                        <div>
-                        <h3>Layout</h3>
-                        <p>Datum</p>
-                        <p>Zuständiger</p>
-                        <p>Aufwand</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                        <h3>Layout</h3>
-                        <p>Datum</p>
-                        <p>Zuständiger</p>
-                        <p>Aufwand</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                        <h3>Layout</h3>
-                        <p>Datum</p>
-                        <p>Zuständiger</p>
-                        <p>Aufwand</p>
-                        </div>
-                    </li>
-                </ul>
-                <button>Tranfer</button>
+                    <li is="titem" v-bind:todo="TestTodo"></li>
+                    <li is="titem" v-bind:todo="TestTodo"></li>
+                    <li is="titem" v-bind:todo="TestTodo"></li>
+                </ul> 
             </section>
+            <section class="footer">
+                    <button>Tranfer</button>
+            </section> 
         </section>
     </div>
 </template>
@@ -47,17 +28,41 @@
 import "./assets/css/transferapp.css"
 
 import pitem from "./components/ProjectItem.vue";
+import titem from "./components/TodoItem.vue";
 
 export default {
     name: "app",
     data: function() {
         return {
-            Testjob: {nr: "SEIN-0001-0001", amount: "5"}
+            Testjob: {
+                nr: "SEIN-0001-0001",
+                amount: 5
+                },
+            TestTodo: {                
+                title: "Druck",
+                startDate: new Date(),
+                endDate: new Date(),
+                workAmountTotal: {HH: "10", mm: "00"},
+                workAmountDone: {HH: "02", mm: "30"}
+                },
+            Todos: [{
+                title: String,
+                startDate: Date,
+                endDate: Date,
+                workAmountTotal: {HH: String, mm: String},
+                workAmountDone: {HH: String, mm: String}
+            }]
         };
     },
     components: {
-        pitem
-    }
+        pitem,
+        titem
+    },
+    methods: {
+        loadProjects: function() {
+            console.log("wip");
+        }
+    }      
 }
 </script>
 
