@@ -3,6 +3,7 @@
         <section class="transferapp" v-cloak>
             <header class="header">
                 <h1>Basecamp to Proad</h1>
+                <h3 v-if="errorMessage.length > 0">{{errorMessage}}</h3>
             </header>
             <section class="projectlist">
                 <ul>
@@ -30,10 +31,14 @@ import "./assets/css/transferapp.css"
 import pitem from "./components/ProjectItem.vue";
 import titem from "./components/TodoItem.vue";
 
+// import Wails from "@wailsapp/runtime";
+
 export default {
     name: "app",
     data: function() {
         return {
+            errorMessage: "",
+            loading: false,
             Testjob: {
                 nr: "SEIN-0001-0001",
                 amount: 5
@@ -51,8 +56,15 @@ export default {
                 endDate: Date,
                 workAmountTotal: {HH: String, mm: String},
                 workAmountDone: {HH: String, mm: String}
-            }]
+            }],
+            projects: []
         };
+    },
+    mounted() {
+        if (!this.loading) {
+            this.loading = true;
+            this.loadProjects();
+        }
     },
     components: {
         pitem,
@@ -60,7 +72,24 @@ export default {
     },
     methods: {
         loadProjects: function() {
-            console.log("wip");
+            window.backend.Basecamp.Login()
+                .then(() => {
+                    window.backend.Basecamp.FetchProjects()
+                        .then(() => {
+                            window.backend.Basecamp.GetProjects().then(pp => {
+                                this.projects = pp.filter(p => {
+                                    p.nr != ""
+                                });
+                                this.loading = false;
+                            });
+                        })
+                        .catch(error => {
+                            this.errorMessage = error;
+                        });
+                })
+                .catch(error => {
+                    this.errorMessage = error;
+                });
         }
     }      
 }
