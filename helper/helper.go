@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
-	"strconv"
 	"time"
 
 	"github.com/AnotherCoolDude/todos/proad/models"
@@ -31,21 +29,15 @@ func ResponseBytes(response *http.Response) ([]byte, error) {
 }
 
 // ProadTodo returns an todo that can be used to create a new todo
-func ProadTodo(title string, startDate time.Time, managerUrno, projectUrno, responsibleUrno int) (models.PostTodo, error) {
-	endDateDays, err := strconv.Atoi(os.Getenv("DEFAULT_DAYS"))
-	todo := models.PostTodo{}
-	if err != nil {
-		return todo, fmt.Errorf("could not parse global var DEFAULT_DAYS: %s", err)
-	}
-	todo = models.PostTodo{
+func ProadTodo(title string, startDate, endDate time.Time, managerUrno, projectUrno, responsibleUrno int) models.PostTodo {
+	return models.PostTodo{
 		Shortinfo:       title,
 		ProjectUrno:     projectUrno,
 		ManagerUrno:     managerUrno,
 		ResponsibleUrno: responsibleUrno,
 		FromDatetime:    startDate.Format(proadDateTimeFormat),
-		UntilDatetime:   startDate.Add(time.Duration(endDateDays) * 24 * time.Hour).Format(proadDateTimeFormat),
+		UntilDatetime:   endDate.Format(proadDateTimeFormat),
 	}
-	return todo, nil
 }
 
 // PrettyPrintBytes prints out bytes (e.g. from a response) in a readable way

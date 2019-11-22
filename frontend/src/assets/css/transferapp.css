@@ -9,7 +9,7 @@ body {
     line-height: 1.4em;
     background: #f5f5f5;
     color: #4d4d4d;
-    min-width: 230px;
+    min-width: 600px;
     max-width: 550px;
     margin: 0 auto;
     -webkit-font-smoothing: antialiased;
@@ -29,6 +29,7 @@ ul {
 }
 
 li {
+    background: #e3dfee;
     min-height: 30px;
     padding: 8px;
     text-align: left;
@@ -36,6 +37,18 @@ li {
     border-style: groove;
     border-width: 0.1px;
     /* 0 25px 50px 0 rgba(0, 0, 0, 0.1); */
+}
+
+li:hover {
+    border-width: 2px;
+}
+
+li:active {
+    background: #8667dd;
+}
+
+li:visited {
+    background: #8667dd;
 }
 
 .item {
@@ -49,7 +62,7 @@ li {
 
 .transferapp {
     background: #fff;
-    margin: 130px 0 40px 0;
+    margin: 80px 0 40px 0;
     position: relative;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
                 0 25px 50px 0 rgba(0, 0, 0, 0.1);
@@ -68,8 +81,8 @@ li {
     grid-column: 1;
     grid-row: 2;
     padding: 5px;
-    /* max-height: 100%;
-    overflow-y: auto; */
+    max-height: 100%;
+    overflow-y: auto;
 }
 
 .todoconfig {

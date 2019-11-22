@@ -1,8 +1,8 @@
 <template>
-  <li class="item">
+  <li class="item" @click="selected">
       <div class="container">
-          <p class="jobnr">{{ job.nr }}</p>
-          <p class="counter">{{ job.amount }} Todos</p>
+          <p class="jobnr">{{ project.nr }}</p>
+          <p class="counter">{{ project.todos.length }} Todos</p>
       </div>
   </li>
 </template>
@@ -10,8 +10,11 @@
 <script>
 export default {
     props: {
-        job: {
-            type: Object
+        project: {nr: String, todos: []}
+    },
+    methods: {
+        selected: function() {
+            this.$emit("projectSelected", this.$vnode.key)
         }
     }
 }
