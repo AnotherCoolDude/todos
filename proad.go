@@ -4,6 +4,7 @@ import (
 	"github.com/AnotherCoolDude/todos/helper"
 	"github.com/AnotherCoolDude/todos/proad"
 	"github.com/AnotherCoolDude/todos/proad/models"
+	"github.com/mitchellh/mapstructure"
 	"github.com/wailsapp/wails"
 )
 
@@ -30,16 +31,26 @@ func (pr *Proad) WailsInit(runtime *wails.Runtime) error {
 }
 
 // GetEmployees returns the employees from proad
-func (pr *Proad) GetEmployees() map[string]int {
-	return pr.client.Employees
+func (pr *Proad) GetEmployees() interface{} {
+	type Employee struct {
+		Name string `json:"name"`
+		Urno int    `json:"urno"`
+	}
+	ee := []Employee{}
+	for k, v := range pr.client.Employees {
+		ee = append(ee, Employee{Name: k, Urno: v})
+	}
+	return ee
 }
 
 // CreateTodo creates a new proad todo
-func (pr *Proad) CreateTodo(todo Todo) error {
+func (pr *Proad) CreateTodo(todoInterface map[string]interface{}) error {
+	var todo Todo
+	mapstructure.Decode(todoInterface, &todo)
 	var project models.Project
 	err := pr.client.FetchProject(todo.Projectnr, &project)
 	if err != nil {
-		pr.logger.Errorf("could not finde project %s: %s", todo.Projectnr, err)
+		pr.logger.Errorf("could not find project %s: %s", todo.Projectnr, err)
 		return err
 	}
 	ptodo := helper.ProadTodo(todo.Title, todo.StartDate, todo.EndDate, pr.client.ManagerUrno, project.Urno, todo.Assignee.Urno)

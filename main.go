@@ -17,6 +17,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	proad, err := DefaultProad()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	app := wails.CreateApp(&wails.AppConfig{
 		Width:  1024,
 		Height: 768,
@@ -27,5 +32,6 @@ func main() {
 	})
 
 	app.Bind(basecamp)
+	app.Bind(proad)
 	app.Run()
 }

@@ -19,11 +19,13 @@
                     <li is="titem"
                         v-for="(todo, index) in selectedProject.todos"
                         v-bind:key="index"
-                        v-bind:todo="todo"></li>
+                        v-bind:todo="todo"
+                        v-bind:employees="employees"
+                        @todoUpdated="updateTodo"></li>
                 </ul> 
             </section>
             <section class="footer">
-                    <button>Tranfer</button>
+                    <button @click="createTodos">Tranfer</button>
             </section> 
         </section>
     </div>
@@ -45,7 +47,7 @@ export default {
             loading: false,
             projects: [],
             selectedProject: Object,
-            employees: []
+            employees: [{name: String, urno: Number}]
         };
     },
     mounted() {
@@ -53,6 +55,7 @@ export default {
             this.loading = true;
             this.login();
             this.getProjects();
+            this.getEmployees();
         }
     },
     components: {
@@ -67,14 +70,12 @@ export default {
                 });
         },
         getProjects: function() {
-            window.backend.Basecamp.FetchProjects()
-                .then(() => {
-                    window.backend.Basecamp.GetProjects().then(pp => {
-                        this.projects = pp.filter(p => {
-                            return p.nr != "";
-                        });
-                        this.selectedProject = this.projects[0];
-                    })
+            window.backend.Basecamp.FetchProjects(false)
+                .then((pp) => {
+                    this.projects = pp.filter(p => {
+                        return p.nr != "";
+                    });
+                    this.selectedProject = this.projects[0];
                     this.loading = false;
                 })
                 .catch(error => {
@@ -83,6 +84,24 @@ export default {
         },
         showTodos: function(key) {
             this.selectedProject = this.projects[key];
+        },
+        getEmployees: function() {
+            window.backend.Proad.GetEmployees().then(ee => {
+                this.employees = ee;
+            });
+        },
+        updateTodo: function(todo, index) {
+            this.selectedProject.todos[index] = todo;
+        },
+        createTodos: function() {
+            for (const todo of this.selectedProject.todos) {
+                if (!todo.assignee) {
+                    this.errorMessage = "Zuständigen auswählen"
+                    return
+                }
+                window.backend.Proad.CreateTodo(todo)
+                    .catch(error => {this.errorMessage = error});
+            }
         }
     }      
 }

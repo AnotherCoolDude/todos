@@ -6,7 +6,7 @@
             <Datepicker :value="todo.startDate" class="item_left" ></Datepicker>
             <Datepicker :value="todo.endDate" class="item_right" ></Datepicker>
             <p class="item_row">Zuständiger</p>
-            <Autocomplete class="item_row" :search="search" :get-result-value="getResultValue"></Autocomplete>
+            <Autocomplete class="item_row" :search="search" :get-result-value="getResultValue" @submit="submit"></Autocomplete>
             <p class="item_row">Erledingt / Gesamtaufwand</p>
             <VueTimepicker class="item_left" format="HH:mm" v-model="todo.workAmountDone"></VueTimepicker>
             <VueTimepicker class="item_right" format="HH:mm" v-model="todo.workAmountTotal"></VueTimepicker>
@@ -27,9 +27,10 @@
                 endDate: Date,
                 workAmountTotal: {HH: String, mm: String},
                 workAmountDone: {HH: String, mm: String},
+                projectnr: String,
+                assignee: {firstname: String, lastname: String, urno: Number}
             },
-           
-
+            employees: Array
         },
         components: {
             Datepicker,
@@ -38,13 +39,7 @@
         },
         data: function () {
             return {
-                testEmployees: [{
-                    name: "Alex"
-                }, {
-                    name: "Peter"
-                }, {
-                    name: "Thomas"
-                }]
+                ee: this.employees
             }
         },
         methods: {
@@ -52,14 +47,26 @@
                 if (input.length < 1) {
                     return []
                 }
-                return this.testEmployees.filter(employee => {
-                    return employee.name.toLowerCase()
-                        .startsWith(input.toLowerCase())
+                return this.employees.filter(employee => {
+                    const s = employee.name.split(" ")
+                    var match = false
+                    for (const n of s) {
+                        if (n.toLowerCase()
+                            .startsWith(input.toLowerCase())) {
+                                match = true
+                            }
+                    }
+                    return match
                 })
             },
             getResultValue: function (result) {
                 return result.name
             },
+            submit: function(result) {
+                const split = result.name.split(" ")
+                this.todo.assignee = {firstname: split[0], lastname: split[1], urno: result.urno}
+                this.$emit("todoUpdated", this.todo, this.$vnode.key)
+            }
         }
     }
 </script>

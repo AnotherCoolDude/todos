@@ -67,16 +67,16 @@ func (bs *Basecamp) Login() error {
 }
 
 // FetchProjects fetches the projects from basecamp
-func (bs *Basecamp) FetchProjects() error {
-	if len(bs.Projects) > 0 {
-		bs.logger.Info("reseting existing projects...")
-		bs.Projects = []Project{}
+func (bs *Basecamp) FetchProjects(reset bool) ([]Project, error) {
+	if len(bs.Projects) > 0 && !reset {
+		bs.logger.Info("returning cached projects...")
+		return bs.Projects, nil
 	}
 	bs.logger.Info("Fetching Projects...")
 	basecamppp, err := bs.client.FetchProjects()
 	if err != nil {
 		bs.logger.Error(err.Error())
-		return err
+		return nil, err
 	}
 	bs.logger.Info("Fetching todos...")
 	for i, p := range basecamppp {
@@ -84,13 +84,13 @@ func (bs *Basecamp) FetchProjects() error {
 		err = bs.client.FetchTodos(&p)
 		if err != nil {
 			bs.logger.Error(err.Error())
-			return err
+			return nil, err
 		}
 		np := newProject(&p)
 		bs.Projects = append(bs.Projects, *np)
 	}
 	bs.logger.Info("Fetching successfull")
-	return nil
+	return bs.Projects, nil
 }
 
 // GetProjects returns projects fetched by the client
