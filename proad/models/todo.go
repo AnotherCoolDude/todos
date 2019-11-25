@@ -103,10 +103,12 @@ type Country struct {
 
 // PostTodo is a Todo that contains fields neccessary for creating a todo
 type PostTodo struct {
-	Shortinfo       string `json:"shortinfo"`
-	ProjectUrno     int    `json:"urno_project"`
-	ManagerUrno     int    `json:"urno_manager"`
-	ResponsibleUrno int    `json:"urno_responsible"`
-	FromDatetime    string `json:"from_datetime"`
-	UntilDatetime   string `json:"until_datetime"`
+	Shortinfo       string  `json:"shortinfo"`
+	ProjectUrno     int     `json:"urno_project"`
+	ManagerUrno     int     `json:"urno_manager"`
+	ResponsibleUrno int     `json:"urno_responsible"`
+	FromDatetime    string  `json:"from_datetime"`
+	UntilDatetime   string  `json:"until_datetime"`
+	HoursPlanned    float64 `json:"hours_planned"`
+	HoursLeft       float64 `json:"hours_left"`
 }

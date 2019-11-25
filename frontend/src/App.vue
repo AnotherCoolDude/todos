@@ -52,10 +52,12 @@ export default {
     },
     mounted() {
         if (!this.loading && this.projects.length == 0) {
+            this.errorMessage = "loading...";
             this.loading = true;
             this.login();
             this.getProjects();
             this.getEmployees();
+            this.errorMessage = "";
         }
     },
     components: {
@@ -94,12 +96,10 @@ export default {
             this.selectedProject.todos[index] = todo;
         },
         createTodos: function() {
+            this.errorMessage = "";
             for (const todo of this.selectedProject.todos) {
-                if (!todo.assignee) {
-                    this.errorMessage = "Zuständigen auswählen"
-                    return
-                }
                 window.backend.Proad.CreateTodo(todo)
+                    .then(() => {this.errorMessage = "transfer erfolgreich"})
                     .catch(error => {this.errorMessage = error});
             }
         }

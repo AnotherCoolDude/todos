@@ -29,7 +29,7 @@ func ResponseBytes(response *http.Response) ([]byte, error) {
 }
 
 // ProadTodo returns an todo that can be used to create a new todo
-func ProadTodo(title string, startDate, endDate time.Time, managerUrno, projectUrno, responsibleUrno int) models.PostTodo {
+func ProadTodo(title string, startDate, endDate time.Time, hoursPlanned, hoursLeft float64, managerUrno, projectUrno, responsibleUrno int) models.PostTodo {
 	return models.PostTodo{
 		Shortinfo:       title,
 		ProjectUrno:     projectUrno,
@@ -37,6 +37,8 @@ func ProadTodo(title string, startDate, endDate time.Time, managerUrno, projectU
 		ResponsibleUrno: responsibleUrno,
 		FromDatetime:    startDate.Format(proadDateTimeFormat),
 		UntilDatetime:   endDate.Format(proadDateTimeFormat),
+		HoursPlanned:    hoursPlanned,
+		HoursLeft:       hoursLeft,
 	}
 }
 

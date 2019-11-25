@@ -119,8 +119,8 @@ func newProject(basecampProject *models.Project) *Project {
 			Title:           bct.Title,
 			StartDate:       bct.CreatedAt,
 			EndDate:         bct.CreatedAt.Add(time.Duration(defaultDays) * 24 * time.Hour),
-			WorkAmountDone:  Workamount{Hours: "00", Minutes: "00"},
-			WorkAmountTotal: Workamount{Hours: "10", Minutes: "00"},
+			WorkAmountDone:  0.0,
+			WorkAmountTotal: 10.0,
 			Projectnr:       bct.Projectno(),
 		}
 		tt = append(tt, t)
@@ -134,13 +134,13 @@ func newProject(basecampProject *models.Project) *Project {
 
 // Todo wraps the basecamp api in a struct for the frontend
 type Todo struct {
-	Title           string     `json:"title"`
-	StartDate       time.Time  `json:"startDate"`
-	EndDate         time.Time  `json:"endDate"`
-	WorkAmountTotal Workamount `json:"workAmountTotal"`
-	WorkAmountDone  Workamount `json:"workAmountDone"`
-	Projectnr       string     `json:"projectnr"`
-	Assignee        Assignee   `json:"assignee"`
+	Title           string    `json:"title"`
+	StartDate       time.Time `json:"startDate"`
+	EndDate         time.Time `json:"endDate"`
+	WorkAmountTotal float64   `json:"workAmountTotal"`
+	WorkAmountDone  float64   `json:"workAmountDone"`
+	Projectnr       string    `json:"projectnr"`
+	Assignee        Assignee  `json:"assignee"`
 }
 
 // Assignee wraps the assignee of the todo into a struct
@@ -148,10 +148,4 @@ type Assignee struct {
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
 	Urno      int    `json:"urno"`
-}
-
-// Workamount wraps the basecamp api in a struct for the frontend
-type Workamount struct {
-	Hours   string `json:"HH"`
-	Minutes string `json:"mm"`
 }

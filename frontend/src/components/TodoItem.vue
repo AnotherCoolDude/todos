@@ -1,15 +1,15 @@
 <template>
     <li>
         <div class="todoItemContainer">
-            <h3 class="item_row">{{ todo.title }}</h3>
-            <p class="item_row">Zeitraum</p>
-            <Datepicker :value="todo.startDate" class="item_left" ></Datepicker>
-            <Datepicker :value="todo.endDate" class="item_right" ></Datepicker>
-            <p class="item_row">Zuständiger</p>
-            <Autocomplete class="item_row" :search="search" :get-result-value="getResultValue" @submit="submit"></Autocomplete>
-            <p class="item_row">Erledingt / Gesamtaufwand</p>
-            <VueTimepicker class="item_left" format="HH:mm" v-model="todo.workAmountDone"></VueTimepicker>
-            <VueTimepicker class="item_right" format="HH:mm" v-model="todo.workAmountTotal"></VueTimepicker>
+            <h3 class="item_title">{{ todo.title }}</h3>
+            <p class="item_desc item_col_left">Zeitraum</p>
+            <Datepicker v-model="todo.startDate" class="item_input_top item_col_left item_input" ></Datepicker>
+            <Datepicker v-model="todo.endDate" class="item_input_bottom item_col_left item_input" ></Datepicker>
+            <p class="item_desc item_col_mid">Zuständiger</p>
+            <Autocomplete base-class="search_emp" class="item_input_top item_col_mid item_input" :search="search" :get-result-value="getResultValue" @submit="submit"></Autocomplete>
+            <p class="item_desc item_col_right">Erledigt / Gesamtaufwand</p>
+            <input class="item_input_top item_col_right item_input" v-model.number="todo.workAmountDone" type="number" step="any">
+            <input class="item_input_bottom item_col_right item_input" v-model.number="todo.workAmountTotal" type="number" step="any">
         </div>
     </li>
 </template>
@@ -17,7 +17,6 @@
 <script>
     import Datepicker from 'vuejs-datepicker';
     import Autocomplete from '@trevoreyre/autocomplete-vue'
-    import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue';
 
     export default {
         props: {
@@ -25,8 +24,8 @@
                 title: String,
                 startDate: Date,
                 endDate: Date,
-                workAmountTotal: {HH: String, mm: String},
-                workAmountDone: {HH: String, mm: String},
+                workAmountTotal: Number,
+                workAmountDone: Number,
                 projectnr: String,
                 assignee: {firstname: String, lastname: String, urno: Number}
             },
@@ -34,12 +33,10 @@
         },
         components: {
             Datepicker,
-            Autocomplete,
-            VueTimepicker
+            Autocomplete
         },
         data: function () {
             return {
-                ee: this.employees
             }
         },
         methods: {
@@ -72,22 +69,63 @@
 </script>
 
 <style>
-.todoItemContainer {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 100/7%;
+
+.item_input {
+    width: 100px;
 }
 
-.todoItemContainer .item_row {
+.search_emp ul {
+    background: white;
+    width: 80%;
+}
+
+.search_emp-result-list li {
+    background: white;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}
+
+.search_emp-result-list li:hover {
+    background: rgb(211, 222, 255);
+}
+
+.todoItemContainer {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+.todoItemContainer .item_title {
+    grid-row: 1;
     grid-column: 1 / end;
 }
 
-.todoItemContainer .item_left {
+.todoItemContainer .item_desc {
+    grid-row: 2;
+}
+
+.todoItemContainer .item_input_top {
+    width: 100%;
+    grid-row: 3;
+}
+
+.todoItemContainer .item_input_bottom {
+    width: 100%;
+    grid-row: 4;
+}
+
+.todoItemContainer .item_col_left {
     grid-column: 1;
 }
 
-.todoItemContainer .item_right {
+.todoItemContainer .item_col_mid {
     grid-column: 2;
+}
+
+.todoItemContainer .item_col_right {
+    grid-column: 3;
 }
 
 </style>
